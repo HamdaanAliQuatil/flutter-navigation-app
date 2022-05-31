@@ -11,6 +11,21 @@ class ArtRoute extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Navigating art'),
+        actions: <Widget>[
+          PopupMenuButton(
+            //icon: Icon(Icons.image),
+            //child: Text('ChanginG Route'),
+            itemBuilder: (BuildContext context){
+              return ArtUtil.menuItems.map((String item){
+                return PopupMenuItem<String>(
+                  child: Text(item),
+                  value: item,
+                );
+              }).toList();
+            },
+            onSelected:(String value) => changeRoute(context, value) ,
+            )
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -22,4 +37,26 @@ class ArtRoute extends StatelessWidget {
       ),
     );
   }
+
+  void changeRoute(BuildContext context, String menuItems){
+    String image = '';
+    switch(menuItems){
+      case ArtUtil.CARAVAGGIO: {
+        image = ArtUtil.IMG_CARAVAGGIO;
+        break;
+      }
+      case ArtUtil.MONET: {
+        image = ArtUtil.IMG_MONET;
+        break;
+      }
+      case ArtUtil.VANGOGH: {
+        image = ArtUtil.IMG_VANGOGH;
+        break;
+      }
+    }
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => ArtRoute(art: image),
+      ));
+  }
+
 }
