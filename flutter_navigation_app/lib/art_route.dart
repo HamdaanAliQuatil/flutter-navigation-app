@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'art_util.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +6,45 @@ import 'package:flutter/material.dart';
 class ArtRoute extends StatelessWidget {
   final String art;
   ArtRoute({required this.art});
+  static int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Choose your art', 
+                style: TextStyle(fontSize: 24,
+                  color: Colors.white,
+                ),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.yellow,
+                image: DecorationImage(
+                  image: NetworkImage('http://bit.ly/fl_sky'),
+                  fit: BoxFit.fill,
+                )
+              ),
+            ),
+            ListTile(
+              title: Text(ArtUtil.CARAVAGGIO),
+              trailing: Icon(Icons.art_track),
+              onTap: () => changeRoute(context, ArtUtil.CARAVAGGIO),
+            ),
+            ListTile(
+              title: Text(ArtUtil.MONET),
+              trailing: Icon(Icons.art_track),
+              onTap: () => changeRoute(context, ArtUtil.MONET),
+            ),
+            ListTile(
+              title: Text(ArtUtil.VANGOGH),
+              trailing: Icon(Icons.art_track),
+              onTap: () => changeRoute(context, ArtUtil.VANGOGH),
+            ),
+          ],
+        )
+      ),
       appBar: AppBar(
         title: Text('Navigating art'),
         actions: <Widget>[
@@ -34,6 +70,29 @@ class ArtRoute extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.lime[900],
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            label: ArtUtil.CARAVAGGIO,
+            icon: Icon(Icons.art_track)
+          ),
+          BottomNavigationBarItem(
+            label: ArtUtil.MONET,
+            icon: Icon(Icons.art_track)
+          ),
+          BottomNavigationBarItem(
+            label: ArtUtil.VANGOGH,
+            icon: Icon(Icons.art_track)
+          ),
+        ],
+        onTap: (value){
+          String _artist = ArtUtil.menuItems[value];
+          _currentIndex = value;
+          changeRoute(context, _artist);
+        },
       ),
     );
   }
